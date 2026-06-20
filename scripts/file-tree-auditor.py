@@ -39,7 +39,8 @@ from pathlib import Path
 EXCLUDE_KEYWORDS = [
     '_文件结构.md', '_月度归档.md', '_差异对比.md',
     '_今日新增.md', '_每日归档.md', '_加班输出资料.md',
-    '_data_structure.json'
+    '_data_structure.json', '_temp_current.json', '_temp_old.json',
+    '.DS_Store', 'Thumbs.db',
 ]
 
 EXCLUDE_DIRS = {
