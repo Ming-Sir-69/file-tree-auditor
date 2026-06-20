@@ -25,6 +25,14 @@ python3 scripts/file-tree-auditor.py --target "/path/to/project" --no-diff
 Replace the path with an authorized target. Use a directory copy first to understand outputs.
 The script imports the standard library directly; [requirements.txt](requirements.txt) does not establish extra charting features.
 
+## Install as a Claude Code Skill
+
+Run `bash install.sh` from the repository root: it copies the script to `~/.claude/scripts/` and [SKILL.md](SKILL.md) to `~/.claude/skills/file-tree-auditor/`. Then run from any directory:
+
+```sh
+python3 ~/.claude/scripts/file-tree-auditor.py --target "/path/to/project"
+```
+
 ## What it writes
 
 Reports are written inside `--target`; later runs update them and `_data_structure.json`.

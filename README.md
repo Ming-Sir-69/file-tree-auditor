@@ -25,6 +25,14 @@ python3 scripts/file-tree-auditor.py --target "/path/to/project" --no-diff
 将路径替换为有权扫描的目录。建议先用目录副本了解输出方式。
 脚本直接导入标准库；[requirements.txt](requirements.txt)不代表额外图表能力已实现。
 
+## 作为 Claude Code Skill 安装
+
+在仓库根目录执行 `bash install.sh`：把脚本复制到 `~/.claude/scripts/`，并把 [SKILL.md](SKILL.md) 复制到 `~/.claude/skills/file-tree-auditor/`。安装后在任意目录运行：
+
+```sh
+python3 ~/.claude/scripts/file-tree-auditor.py --target "/path/to/project"
+```
+
 ## 它会写入什么
 
 报告写入 `--target` 目录，后续运行更新报告和 `_data_structure.json`。
