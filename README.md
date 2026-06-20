@@ -27,10 +27,11 @@ python3 scripts/file-tree-auditor.py --target "/path/to/project" --no-diff
 
 ## 作为 Claude Code Skill 安装
 
-在仓库根目录执行 `bash install.sh`：把脚本复制到 `~/.claude/scripts/`，并把 [SKILL.md](SKILL.md) 复制到 `~/.claude/skills/file-tree-auditor/`。安装后在任意目录运行：
+在仓库根目录执行 `bash install.sh`：把脚本复制到 Skill 内部 `~/.claude/skills/file-tree-auditor/scripts/`，在 `~/.claude/scripts/` 保留指向它的符号链接，并复制 [SKILL.md](SKILL.md)。安装后在任意目录运行（两条路径都能用）：
 
 ```sh
 python3 ~/.claude/scripts/file-tree-auditor.py --target "/path/to/project"
+python3 ~/.claude/skills/file-tree-auditor/scripts/file-tree-auditor.py --target "/path/to/project"
 ```
 
 ## 它会写入什么

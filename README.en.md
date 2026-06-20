@@ -27,10 +27,11 @@ The script imports the standard library directly; [requirements.txt](requirement
 
 ## Install as a Claude Code Skill
 
-Run `bash install.sh` from the repository root: it copies the script to `~/.claude/scripts/` and [SKILL.md](SKILL.md) to `~/.claude/skills/file-tree-auditor/`. Then run from any directory:
+Run `bash install.sh` from the repository root: it copies the script into the Skill at `~/.claude/skills/file-tree-auditor/scripts/`, keeps a symlink to it in `~/.claude/scripts/`, and copies [SKILL.md](SKILL.md). Then run from any directory (either path works):
 
 ```sh
 python3 ~/.claude/scripts/file-tree-auditor.py --target "/path/to/project"
+python3 ~/.claude/skills/file-tree-auditor/scripts/file-tree-auditor.py --target "/path/to/project"
 ```
 
 ## What it writes
