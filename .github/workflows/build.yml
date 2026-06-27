@@ -1,0 +1,66 @@
+name: 打包发布 (Build & Release)
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            artifact_name: file-tree-auditor.exe
+            asset_name: file-tree-auditor-windows-x64.exe
+          - os: macos-latest
+            artifact_name: file-tree-auditor
+            asset_name: file-tree-auditor-macos-arm64
+          - os: ubuntu-latest
+            artifact_name: file-tree-auditor
+            asset_name: file-tree-auditor-linux-x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: |
+          python -m pip install --upgrade pip
+      - run: |
+          pip install pyinstaller
+          pyinstaller --onefile --name "${{ matrix.artifact_name }}" scripts/file-tree-auditor.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset_name }}
+          path: dist/${{ matrix.artifact_name }}
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/download-artifact@v4
+      - run: |
+          mkdir -p release_files
+          cp file-tree-auditor-windows-x64.exe/file-tree-auditor.exe release_files/file-tree-auditor-windows-x64.exe
+          cp file-tree-auditor-macos-arm64/file-tree-auditor release_files/file-tree-auditor-macos-arm64
+          cp file-tree-auditor-linux-x64/file-tree-auditor release_files/file-tree-auditor-linux-x64
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: release_files/*
+          body: |
+            ## file-tree-auditor v2.1 自动打包发布
+            
+            - 新增 requirements.txt，AI 自动检测依赖并增强
+            - SKILL.md 加入 AI 自检逻辑
+            - 有依赖出图表，无依赖不报错
+            
+            ### 系统支持
+            | 文件 | 平台 |
+            |------|------|
+            | `file-tree-auditor-windows-x64.exe` | Windows 10/11 x64 |
+            | `file-tree-auditor-macos-arm64` | macOS Apple Silicon |
+            | `file-tree-auditor-linux-x64` | Linux x86_64 |
