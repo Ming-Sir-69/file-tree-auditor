@@ -1,61 +1,62 @@
-# File Tree Auditor · 文件结构审计与变动追踪
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="readme-assets/header-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="readme-assets/header-light.svg">
+  <img alt="File Tree Auditor · 文件变化地图 · ✦ EricMingle69" src="readme-assets/header-light.svg" width="100%">
+</picture>
 
-扫描一个本地项目目录，生成文件树、变动对比、每日/月度归档和结构化 JSON 记录。适合需要整理项目材料、查看文件变化或准备目录交接的使用者。
+<p align="center">
+  <a href="README.md">简体中文</a> · <a href="README.en.md">English</a> · <a href="PERSONAL-NOTICE.md">✦ EricMingle69</a>
+</p>
 
-## 快速开始
+# File Tree Auditor · 文件变化地图
 
-### 使用源码
+扫描本地项目，生成文件树、增量差异与日期视图。
+适合资料整理、结构交接和文件变化追踪；分析依据是路径与文件元数据。
 
-在下载或克隆的仓库根目录，用 Python 3 执行：
+## 用源码开始
+
+准备 Python 3，在仓库根目录执行：
 
 ```sh
 python3 scripts/file-tree-auditor.py --target "/path/to/project"
-# 可选：跳过本次差异对比
 python3 scripts/file-tree-auditor.py --target "/path/to/project" --no-diff
 ```
 
-将目标路径替换为自己有权扫描的目录。脚本当前直接导入 Python 标准库；仓库另保留了 [requirements.txt](requirements.txt)，不要据此推断尚未实现的图表能力。
+将路径替换为有权扫描的目录。建议先用目录副本了解输出方式。
+脚本直接导入标准库；[requirements.txt](requirements.txt)不代表额外图表能力已实现。
 
-### 获取已发布程序
+## 它会写入什么
 
-已观察到的最新归档为 [v2.1](https://github.com/Ming-Sir-69/file-tree-auditor/releases/tag/v2.1)，可按系统与架构下载命名附件：
+报告写入 `--target` 目录，后续运行更新报告和 `_data_structure.json`。
 
-| 系统 | 附件 |
-| --- | --- |
-| Linux x64 | `file-tree-auditor-linux-x64` |
-| macOS Apple Silicon | `file-tree-auditor-macos-arm64` |
-| Windows x64 | `file-tree-auditor-windows-x64.exe` |
-
-命名附件与 GitHub 自动打包的源码不同。此页的源码参数已按当前主分支核对；Release 二进制的实际运行兼容性与参数一致性尚未重新验证。
-
-## 产出与目录入口
-
-报告会写入被扫描的 `--target` 目录，后续运行会更新相应报告和 `_data_structure.json` 基线。首次没有历史 JSON 时无法形成完整增量对比；`--no-diff` 仍会生成其他报告并更新 JSON 基线。请先在目标目录的副本中了解输出方式。
-
-| 文件 | 用途 |
+| 输出 | 内容 |
 | --- | --- |
 | `<目录名>_文件结构.md` | 文件树 |
-| `<目录名>_差异对比.md` | 与上次基线的新增、移除、修改与移动对比 |
-| `<目录名>_今日新增.md` | 按当天修改时间筛选的文件清单（含修改，非仅新建） |
-| `<目录名>_月度归档.md` / `<目录名>_每日归档.md` | 按月份或日期组织的目录视图 |
-| `<目录名>_加班输出资料.md` | 以文件时间与固定日期规则划分的参考记录 |
-| `_data_structure.json` | 供下次比较及程序读取的文件元数据 |
+| `<目录名>_差异对比.md` | 与旧基线比较新增、移除、修改、移动 |
+| `<目录名>_今日新增.md` | 当天修改时间命中的文件，包含旧文件修改 |
+| `<目录名>_月度归档.md` / `每日归档.md` | 日期组织视图 |
+| `<目录名>_加班输出资料.md` | 固定日期规则参考记录 |
+| `_data_structure.json` | 下次比较的元数据基线 |
 
-实现入口：[scripts/file-tree-auditor.py](scripts/file-tree-auditor.py)。构建定义：[.github/workflows/build.yml](.github/workflows/build.yml)。
+首次没有旧 JSON 时不能形成完整增量对比；`--no-diff` 仍更新其他报告与 JSON。
 
-## 限制与状态
+## 已发布程序
 
-- 分析依据是文件系统元数据与路径，不是 Git 提交历史或文档内容审计；文件时间不能单独证明实际工作时长、作者或内容质量。
-- 当前加班分类日期范围硬编码为 2025-07-01 至 2026-06-26，并使用固定节假日/调休规则；其他年份须核对实现，不能把报告直接当成考勤依据。
-- 当前排除集合包含 `.git`、`__pycache__`、`node_modules`、常见虚拟环境与部分 IDE 目录，并非所有敏感路径都会自动排除。报告会列出目标目录的路径与时间，分享前请检查内容。
-- 本次仅核对源码入口与 Release 元数据，未扫描用户目录、运行代码或验证二进制。
+[v2.1](https://github.com/Ming-Sir-69/file-tree-auditor/releases/tag/v2.1)有 Linux x64、macOS arm64、Windows x64 命名附件。
+二进制兼容性与源码参数是否一致需结合实际版本确认，下载源码压缩包不等于取得这些程序。
 
-## 贡献与维护
+## 判断边界
 
-欢迎通过本仓库 Issue 或 Pull Request 补充可复现步骤、纠正文档或说明兼容问题；请附环境、操作步骤和预期结果，并保留原作者与引用来源。
+文件时间不能单独证明工作时长、作者或质量，报告也不是 Git 历史或内容审计。
+加班分类当前日期范围固定为 2025-07-01 至 2026-06-26，并使用固定节假日规则。
+排除项不覆盖所有敏感路径；分享报告前检查其中的目录与时间。
 
-文档与导航维护：[Ming-Sir-69](https://github.com/Ming-Sir-69)。此署名只标识仓库维护，不改变项目、资料或第三方组件的权属。
+## 实现与许可
 
-## 许可
+[脚本](scripts/file-tree-auditor.py)提供入口，[构建定义](.github/workflows/build.yml)记录打包方式。
+当前没有覆盖原代码的 LICENSE；复用与再分发权限需确认。
 
-当前文件树未发现 LICENSE 或 NOTICE。此 README 的维护署名不新增开源、商用或资料再分发授权；具体授权范围待维护者确认。
+---
+
+文档维护：**✦ EricMingle69** · [Ming-Sir-69](https://github.com/Ming-Sir-69)  
+[个人标识、许可与权限说明](PERSONAL-NOTICE.md) · 明暗页眉随 GitHub 主题自动切换。
